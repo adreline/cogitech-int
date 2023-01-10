@@ -37,7 +37,10 @@ class PullPostsCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $response = $this->api->fetchPosts();
-        $response->getData();
+        $posts = $this->api->fetchPosts();
+        foreach($posts as $post){
+            $io->text($post['title']);
+        }
+        return Command::SUCCESS;
     }
 }

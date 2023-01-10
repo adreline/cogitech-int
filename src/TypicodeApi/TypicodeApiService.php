@@ -28,20 +28,28 @@ class TypicodeApiService
             'base_uri' => $params->get('app.api.base_uri')
         ]);
     }
-
     /**
      * @throws TransportExceptionInterface
      */
-    public function fetchPosts(): ResponseInterface
+    private function fetch(string $uri): array
     {
-        return $this->client->request('GET', '/posts');
+        $response = $this->client->request('GET', $uri);
+        $data = $response->getContent();
+        return json_decode($data, true);
     }
     /**
      * @throws TransportExceptionInterface
      */
-    public function fetchUsers(): ResponseInterface
+    public function fetchPosts(): array
     {
-        return $this->client->request('GET', '/users');
+        return $this->fetch('/posts');
+    }
+    /**
+     * @throws TransportExceptionInterface
+     */
+    public function fetchUsers(): array
+    {
+        return $this->fetch('/users');
     }
 
 

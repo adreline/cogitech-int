@@ -34,12 +34,24 @@ class PullPostsCommand extends Command
             );
     }
 */
+    private function searchUser(array $users, int $user_id): array
+    {
+        foreach($users as $user){
+            if($user['id'] === $user_id) return $user;
+        }
+    }
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
         $posts = $this->api->fetchPosts();
-        foreach($posts as $post){
-            $io->text($post['title']);
+        $users = $this->api->fetchUsers();
+        foreach($posts as &$post){
+            $user = $this->searchUser($users, $post['userId']);
+            $post['author_name'] = $user['name'];
+            $io->text([
+                $post['title'],
+                $post['author_name']
+                ]);
         }
         return Command::SUCCESS;
     }

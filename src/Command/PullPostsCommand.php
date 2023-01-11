@@ -9,6 +9,8 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use App\TypicodeApi\TypicodeApiService;
+use App\Entity\Post;
+use Doctrine\Persistence\ManagerRegistry;
 
 #[AsCommand(
     name: 'app:pull-posts',
@@ -18,7 +20,8 @@ class PullPostsCommand extends Command
 {
 
     public function __construct(
-        protected readonly TypicodeApiService $api
+        protected readonly TypicodeApiService $api,
+        protected readonly ManagerRegistry $doctrine
     ) {
         parent::__construct();
     }
@@ -29,19 +32,29 @@ class PullPostsCommand extends Command
             if($user['id'] === $user_id) return $user;
         }
     }
+
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
         $posts = $this->api->fetchPosts();
         $users = $this->api->fetchUsers();
-        foreach($posts as &$post){
-            $user = $this->searchUser($users, $post['userId']);
-            $post['author_name'] = $user['name'];
-            $io->text([
-                $post['title'],
-                $post['author_name']
-                ]);
+
+        $entityManager = $this->doctrine->getManager();
+
+        foreach($posts as $shard){
+            $user = $this->searchUser($users, $shard['userId']);
+
+            $post = new Post();
+            $post->setUserId($shard['userId']);
+            $post->setTitle($shard['title']);
+            $post->setAuthor($user['name']);
+            $post->setBody($shard['body']);
+
+            $entityManager->persist($post);
         }
+
+        $entityManager->flush();
+
         return Command::SUCCESS;
     }
 }

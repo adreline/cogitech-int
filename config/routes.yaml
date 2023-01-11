@@ -7,3 +7,9 @@ controllers:
 app_posts:
     path: /posts
     controller: App\Controller\PostsController::index
+    methods: GET
+
+app_home:
+    path: /
+    controller: App\Controller\HomeController::index
+    methods: GET

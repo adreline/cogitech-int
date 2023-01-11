@@ -34,9 +34,15 @@
               <div class="navbar-end">
                 <div class="navbar-item">
                   <div class="buttons">
-                    <a class="button is-primary">
-                      <strong>Log in</strong>
-                    </a>
+                    {% if app.user %}
+                      <p>
+                          You are logged in as {{ app.user.userIdentifier }} <a class="button is-light" href="{{ path('app_logout') }}">Logout</a>
+                      </p>
+                    {% else %}
+                      <a class="button is-primary" href="{{ path('app_login') }}">
+                        <strong>Log in</strong>
+                      </a>
+                    {% endif %}
                   </div>
                 </div>
               </div>

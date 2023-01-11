@@ -13,11 +13,17 @@ class PostsController extends AbstractController
     #[Route('/posts', name: 'app_posts')]
     public function index(ManagerRegistry $doctrine): JsonResponse
     {
-        $post_repo = $doctrine->getRepository(Post::class);
-        
-        return $this->json([
-            'message' => 'Welcome to your new controller!',
-            'path' => 'src/Controller/PostsController.php',
-        ]);
+        $posts = $doctrine->getRepository(Post::class)->findAll();
+        $list = [];
+        foreach($posts as $post){
+            $list[]=[
+                'id' => $post->getId(),
+                'title' => $post->getTitle(),
+                'user_id' => $post->getUserId(),
+                'user_name' => $post->getAuthor(),
+                'body' => $post->getBody()
+            ];
+        }
+        return $this->json($list);
     }
 }

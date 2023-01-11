@@ -22,18 +22,7 @@ class PullPostsCommand extends Command
     ) {
         parent::__construct();
     }
-/*
-    protected function configure(): void
-    {
-        $this
-            ->addOption(
-                'output',
-                'o',
-                InputOption::VALUE_REQUIRED,
-                'Output path. If no given, an auto generated name will be chosen and saved in a current directory.'
-            );
-    }
-*/
+    
     private function searchUser(array $users, int $user_id): array
     {
         foreach($users as $user){

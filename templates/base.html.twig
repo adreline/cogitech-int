@@ -3,17 +3,56 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
-        {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
-        {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
+        {% block stylesheets %}     
+        <link href="{{ asset('assets/bulma.css') }}" rel="stylesheet"/>
         {% endblock %}
-
         {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
         {% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+        <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+              <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+              </a>
+            </div>
+          
+            <div id="navbarBasicExample" class="navbar-menu">
+              <div class="navbar-start">
+                <a class="navbar-item" href="{{ path('app_home') }}">
+                  Home
+                </a>
+          
+                <a class="navbar-item" href="{{ path('app_posts') }}">
+                  /Posts
+                </a>
+
+              </div>
+          
+              <div class="navbar-end">
+                <div class="navbar-item">
+                  <div class="buttons">
+                    <a class="button is-primary">
+                      <strong>Log in</strong>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </nav>
+        <section class="section">
+            <div class="container">
+                {% block body %}{% endblock %}
+            </div>
+        </section>
+        <footer class="footer">
+            <div class="content has-text-centered">
+              <p>
+                Powered by <strong>Bulma</strong> by <a href="https://jgthms.com">Jeremy Thomas</a>.
+              </p>
+            </div>
+          </footer>
     </body>
 </html>

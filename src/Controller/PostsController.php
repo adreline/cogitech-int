@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Post;
+use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -27,10 +28,34 @@ class PostsController extends AbstractController
         }
         return $this->json($list);
     }
-    #[Route('/posts/edit', name: 'app_posts_editor')]
+    #[Route('/lista', name: 'app_posts_editor')]
     public function show_editor(ManagerRegistry $doctrine): Response
     {
         $posts = $doctrine->getRepository(Post::class)->findAll();
-        return $this->render('editor.html.twig',['posts'=>$posts]);
+        $list = [];
+        foreach($posts as $post){
+            $list[]=[
+                'id' => $post->getId(),
+                'title' => $post->getTitle(),
+                'user_id' => $post->getUserId(),
+                'user_name' => $post->getAuthor(),
+                'body' => $post->getBody()
+            ];
+        }
+        return $this->render('editor.html.twig',['posts'=>$list]);
+    }
+    #[Route('/lista', name: 'app_posts_editor_delete')]
+    public function editor_delete(ManagerRegistry $doctrine, Request $request): Response
+    {
+        $submittedToken = $request->request->get('token');
+        if ($this->isCsrfTokenValid('delete_post_token', $submittedToken)) {
+            $id = $request->get('post_id');
+            $this->addFlash('success', 'Post id = '.$id.' deleted');
+        }else{
+            $this->addFlash('warning', 'Post was not deleted');
+        }
+
+            $referer = $request->headers->get('referer');
+            return $this->redirect($referer);
     }
 }

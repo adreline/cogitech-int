@@ -1,5 +1,6 @@
 # cogitech-int
-Coding job interview solution for Cogitech group
+Coding job interview solution for Cogitech group. 
+See the live [demo](http://cogitech.duckdns.org:9081/)
 
 ### Setup ###
 

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        {% block stylesheets %}     
+        <link href="{{ asset('assets/bulma.css') }}" rel="stylesheet"/>
+        {% endblock %}
+        {% block javascripts %}
+          <script>
+            document.addEventListener('DOMContentLoaded', () => {
+              function closeModal($el) {
+                $el.classList.remove('is-active');
+              }
+              // Add a click event on various child elements to close the parent modal
+              (document.querySelectorAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button') || []).forEach(($close) => {
+                const $target = $close.closest('.modal');
+
+                $close.addEventListener('click', () => {
+                  closeModal($target);
+                });
+              });
+            });
+          </script>
+        {% endblock %}
+    </head>
+    <body>
+      {% if app.session.flashBag.peek('success') is not empty or app.session.flashBag.peek('warning') is not empty %}
+      <div class="modal is-active">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+          {% for label, messages in app.flashes(['success', 'warning']) %}
+              {% for message in messages %}
+                  <div class="notification is-{{ label }}">
+                      {{ message }}
+                  </div>
+              {% endfor %}
+          {% endfor %}
+        </div>
+        <button class="modal-close is-large" aria-label="close"></button>
+      </div>
+    {% endif %}
+        <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+              <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+              </a>
+            </div>
+          
+            <div id="navbarBasicExample" class="navbar-menu">
+              <div class="navbar-start">
+                <a class="navbar-item" href="{{ path('app_home') }}">
+                  Home
+                </a>
+          
+                <a class="navbar-item" href="{{ path('app_posts_editor') }}">
+                  Editor
+                </a>
+
+                <a class="navbar-item" href="{{ path('app_posts_api') }}">
+                  /Posts
+                </a>
+
+              </div>
+          
+              <div class="navbar-end">
+                <div class="navbar-item">
+                  <div class="buttons">
+                    {% if app.user %}
+                      <p>
+                          You are logged in as {{ app.user.userIdentifier }} <a class="button is-light" href="{{ path('app_logout') }}">Logout</a>
+                      </p>
+                    {% else %}
+                      <a class="button is-primary" href="{{ path('app_login') }}">
+                        <strong>Log in</strong>
+                      </a>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </nav>
+        <section class="section">
+            <div class="container">
+                {% block body %}{% endblock %}
+            </div>
+        </section>
+        <footer class="footer">
+            <div class="content has-text-centered">
+              <p>
+                Powered by <a href="https://symfony.com">Symfony</a>.
+                CSS by <a href="https://bulma.io">Bulma</a>.
+                <br>
+                Source code licensed <a href="https://opensource.org/licenses/mit-license.php" target="_blank">MIT</a>.
+                <br>
+                Made by <a href="https://github.com/adreline">adreline</a>.
+              </p>
+            </div>
+          </footer>
+    </body>
+</html>

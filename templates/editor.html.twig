@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <h1 class="title">Posts editor</h1>
+    <table class="table">
+        <thead>
+          <tr>
+            <th><abbr title="Local id">Id</abbr></th>
+            <th><abbr title="Original Id">Legacy Id</abbr></th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for post in posts %}
+                <tr>
+                    <th>{{post['id']}}</th>
+                    <th>{{post['legacy_id']}}</th>
+                    <th>{{post['title']}}</th>
+                    <th>{{post['user_name']}}</th>
+                    <th>
+                        <form action="{{ url('app_posts_editor_delete', { id: post['id'] }) }}" method="post">
+                            {# the argument of csrf_token() is an arbitrary string used to generate the token #}
+                            <input type="hidden" name="token" value="{{ csrf_token('delete_post_token') }}"/>
+                            <button class="button is-danger" type="submit">Delete</button>
+                        </form>
+                    </th>
+                </tr>
+            {% endfor %}
+                
+
+        </tbody>
+
+      </table>
+{% endblock %}

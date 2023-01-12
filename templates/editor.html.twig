@@ -1,5 +1,38 @@
 {% extends 'base.html.twig' %}
 {% block body %}
     <h1 class="title">Posts editor</h1>
-    
+    <table class="table">
+        <thead>
+          <tr>
+            <th><abbr title="Local id">Id</abbr></th>
+            <th><abbr title="Original Id">Legacy Id</abbr></th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for post in posts %}
+                <tr>
+                    <th>{{post['id']}}</th>
+                    <th>{{post['id']}}</th>
+                    <th>{{post['title']}}</th>
+                    <th>{{post['user_name']}}</th>
+                    <th>
+                        <form method="post">
+                            <input type="hidden" name="_csrf_token"
+                                value="{{ csrf_token('delete_post_token') }}"
+                            >
+                            <input type="hidden" name="post_id"
+                                value="{{ post['id'] }}"
+                            >
+                            <button class="button is-danger" type="submit">Delete</button>
+                        </form>
+                    </th>
+                </tr>
+            {% endfor %}
+
+          
+        </tbody>
+      </table>
 {% endblock %}

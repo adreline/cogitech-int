@@ -13,6 +13,11 @@ Install the app
 ```bash
 composer install
 ```
+Migrate database
+
+```bash
+php bin/console doctrine:migrations:migrate
+```
 
 ### Usage ###
 

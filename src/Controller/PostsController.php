@@ -44,12 +44,11 @@ class PostsController extends AbstractController
         }
         return $this->render('editor.html.twig',['posts'=>$list]);
     }
-    #[Route('/lista', name: 'app_posts_editor_delete')]
-    public function editor_delete(ManagerRegistry $doctrine, Request $request): Response
+    #[Route('/lista/{id}', name: 'app_posts_editor_delete')]
+    public function editor_delete(int $id,ManagerRegistry $doctrine, Request $request): Response
     {
         $submittedToken = $request->request->get('token');
         if ($this->isCsrfTokenValid('delete_post_token', $submittedToken)) {
-            $id = $request->get('post_id');
             $this->addFlash('success', 'Post id = '.$id.' deleted');
         }else{
             $this->addFlash('warning', 'Post was not deleted');

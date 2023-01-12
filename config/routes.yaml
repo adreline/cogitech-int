@@ -15,9 +15,11 @@ app_posts_editor:
     methods: GET
 
 app_posts_editor_delete:
-    path: /lista
+    path: /lista/{id}
     controller: App\Controller\PostsController::editor_delete
     methods: POST
+    requirements:
+        id: '\d+'
 
 app_home:
     path: /

@@ -4,9 +4,14 @@ controllers:
         namespace: App\Controller
     type: attribute
 
-app_posts:
+app_posts_api:
     path: /posts
-    controller: App\Controller\PostsController::index
+    controller: App\Controller\PostsController::show_api
+    methods: GET
+
+app_posts_editor:
+    path: /posts/edit
+    controller: App\Controller\PostsController::show_editor
     methods: GET
 
 app_home:

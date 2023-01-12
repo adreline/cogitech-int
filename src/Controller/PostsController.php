@@ -7,11 +7,12 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Post;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\Response;
 
 class PostsController extends AbstractController
 {
-    #[Route('/posts', name: 'app_posts')]
-    public function index(ManagerRegistry $doctrine): JsonResponse
+    #[Route('/posts', name: 'app_posts_api')]
+    public function show_api(ManagerRegistry $doctrine): JsonResponse
     {
         $posts = $doctrine->getRepository(Post::class)->findAll();
         $list = [];
@@ -25,5 +26,11 @@ class PostsController extends AbstractController
             ];
         }
         return $this->json($list);
+    }
+    #[Route('/posts/edit', name: 'app_posts_editor')]
+    public function show_editor(ManagerRegistry $doctrine): Response
+    {
+        $posts = $doctrine->getRepository(Post::class)->findAll();
+        return $this->render('editor.html.twig',['posts'=>$posts]);
     }
 }

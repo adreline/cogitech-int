@@ -36,6 +36,7 @@ class PostsController extends AbstractController
         foreach($posts as $post){
             $list[]=[
                 'id' => $post->getId(),
+                'legacy_id' => $post->getLegacyId(),
                 'title' => $post->getTitle(),
                 'user_id' => $post->getUserId(),
                 'user_name' => $post->getAuthor(),

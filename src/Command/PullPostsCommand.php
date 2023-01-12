@@ -49,7 +49,7 @@ class PullPostsCommand extends Command
             $post->setTitle($shard['title']);
             $post->setAuthor($user['name']);
             $post->setBody($shard['body']);
-
+            $post->setLegacyId($shard['id']);
             $entityManager->persist($post);
         }
 

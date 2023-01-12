@@ -25,6 +25,9 @@ class Post
     #[ORM\Column(length: 4084, nullable: true)]
     private ?string $body = null;
 
+    #[ORM\Column]
+    private ?int $legacy_id = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -74,6 +77,18 @@ class Post
     public function setBody(?string $body): self
     {
         $this->body = $body;
+
+        return $this;
+    }
+
+    public function getLegacyId(): ?int
+    {
+        return $this->legacy_id;
+    }
+
+    public function setLegacyId(int $legacy_id): self
+    {
+        $this->legacy_id = $legacy_id;
 
         return $this;
     }

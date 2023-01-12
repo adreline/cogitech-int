@@ -7,9 +7,39 @@
         <link href="{{ asset('assets/bulma.css') }}" rel="stylesheet"/>
         {% endblock %}
         {% block javascripts %}
+          <script>
+            document.addEventListener('DOMContentLoaded', () => {
+              function closeModal($el) {
+                $el.classList.remove('is-active');
+              }
+              // Add a click event on various child elements to close the parent modal
+              (document.querySelectorAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button') || []).forEach(($close) => {
+                const $target = $close.closest('.modal');
+
+                $close.addEventListener('click', () => {
+                  closeModal($target);
+                });
+              });
+            });
+          </script>
         {% endblock %}
     </head>
     <body>
+      {% if app.session.flashBag.peek('success') is not empty or app.session.flashBag.peek('warning') is not empty %}
+      <div class="modal is-active">
+        <div class="modal-background"></div>
+        <div class="modal-content">
+          {% for label, messages in app.flashes(['success', 'warning']) %}
+              {% for message in messages %}
+                  <div class="notification is-{{ label }}">
+                      {{ message }}
+                  </div>
+              {% endfor %}
+          {% endfor %}
+        </div>
+        <button class="modal-close is-large" aria-label="close"></button>
+      </div>
+    {% endif %}
         <nav class="navbar is-dark" role="navigation" aria-label="main navigation">
             <div class="navbar-brand">
               <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">

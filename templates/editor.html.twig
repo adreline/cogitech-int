@@ -19,20 +19,17 @@
                     <th>{{post['title']}}</th>
                     <th>{{post['user_name']}}</th>
                     <th>
-                        <form method="post">
-                            <input type="hidden" name="_csrf_token"
-                                value="{{ csrf_token('delete_post_token') }}"
-                            >
-                            <input type="hidden" name="post_id"
-                                value="{{ post['id'] }}"
-                            >
+                        <form action="{{ url('app_posts_editor_delete', { id: post['id'] }) }}" method="post">
+                            {# the argument of csrf_token() is an arbitrary string used to generate the token #}
+                            <input type="hidden" name="token" value="{{ csrf_token('delete_post_token') }}"/>
                             <button class="button is-danger" type="submit">Delete</button>
                         </form>
                     </th>
                 </tr>
             {% endfor %}
+                
 
-          
         </tbody>
+
       </table>
 {% endblock %}

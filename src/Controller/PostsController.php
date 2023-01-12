@@ -49,7 +49,15 @@ class PostsController extends AbstractController
     {
         $submittedToken = $request->request->get('token');
         if ($this->isCsrfTokenValid('delete_post_token', $submittedToken)) {
-            $this->addFlash('success', 'Post id = '.$id.' deleted');
+            $entityManager = $doctrine->getManager();
+            $post = $doctrine->getRepository(Post::class)->find($id);
+            if(!$post){
+                $this->addFlash('warning', 'Post not found');
+            }else{
+                $entityManager->remove($post);
+                $entityManager->flush();
+                $this->addFlash('success', 'Post id = '.$id.' deleted');
+            }
         }else{
             $this->addFlash('warning', 'Post was not deleted');
         }

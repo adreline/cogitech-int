@@ -10,9 +10,14 @@ app_posts_api:
     methods: GET
 
 app_posts_editor:
-    path: /posts/edit
+    path: /lista
     controller: App\Controller\PostsController::show_editor
     methods: GET
+
+app_posts_editor_delete:
+    path: /lista
+    controller: App\Controller\PostsController::editor_delete
+    methods: POST
 
 app_home:
     path: /

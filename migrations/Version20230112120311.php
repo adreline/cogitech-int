@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20230111161902 extends AbstractMigration
+final class Version20230112120311 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,10 +20,13 @@ final class Version20230111161902 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE TABLE post (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER NOT NULL, title VARCHAR(255) NOT NULL, author VARCHAR(255) NOT NULL, body CLOB DEFAULT NULL)');
+        $this->addSql('CREATE TABLE post (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, user_id INTEGER NOT NULL, title VARCHAR(255) NOT NULL, author VARCHAR(255) NOT NULL, body CLOB DEFAULT NULL, legacy_id INTEGER NOT NULL)');
         $this->addSql('CREATE TABLE user (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, username VARCHAR(180) NOT NULL, roles CLOB NOT NULL --(DC2Type:json)
         , password VARCHAR(255) NOT NULL)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_8D93D649F85E0677 ON user (username)');
+        // inserts default admin user
+        $this->addSql('INSERT INTO "user" (id, username, roles, password) VALUES(1, \'admin\', \'[]\', \'$2y$13$7DZnvCiDqo7ybEIcGb.wLu2BYlvNYuMVoDFG3mcGRoDWne/0fCquy\');');
+
     }
 
     public function down(Schema $schema): void
